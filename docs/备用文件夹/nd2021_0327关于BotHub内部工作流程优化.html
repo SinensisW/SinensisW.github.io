@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文档将从三个层面对 BotHub 流程优化进行说明    1.Why - 为什么要做BotHub流程优化，其核心目的是什么？    2.How - BotHub流程优化是如何起效的，与之前的核心区别是什么？    3.What - BotHub流程优化需要完成哪些任务？ 以上三层可以被理解为 Objective(根本目的) → KeyResult(与之前比可量化的提升) → by What(明">
+<meta property="og:type" content="website">
+<meta property="og:title" content="小G同学的博客">
+<meta property="og:url" content="http://example.com/%E5%A4%87%E7%94%A8%E6%96%87%E4%BB%B6%E5%A4%B9/nd2021_0327%E5%85%B3%E4%BA%8EBotHub%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96.html">
+<meta property="og:site_name" content="小G同学的博客">
+<meta property="og:description" content="本文档将从三个层面对 BotHub 流程优化进行说明    1.Why - 为什么要做BotHub流程优化，其核心目的是什么？    2.How - BotHub流程优化是如何起效的，与之前的核心区别是什么？    3.What - BotHub流程优化需要完成哪些任务？ 以上三层可以被理解为 Objective(根本目的) → KeyResult(与之前比可量化的提升) → by What(明">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="c:/Users/EDZ/AppData/Roaming/Typora/typora-user-images/image-20210410170430634.png">
+<meta property="article:published_time" content="2023-11-23T12:20:58.137Z">
+<meta property="article:modified_time" content="2022-07-23T14:24:16.045Z">
+<meta property="article:author" content="Wan Gong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/EDZ/AppData/Roaming/Typora/typora-user-images/image-20210410170430634.png">
+
+<link rel="canonical" href="http://example.com/%E5%A4%87%E7%94%A8%E6%96%87%E4%BB%B6%E5%A4%B9/nd2021_0327%E5%85%B3%E4%BA%8EBotHub%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : false,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 小G同学的博客
+</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">小G同学的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+  
+  
+
+          <div class="content page posts-expand">
+            
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta">
+  
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <hr>
+<p>本文档将从三个层面对 BotHub 流程优化进行说明<br>    1.Why - 为什么要做BotHub流程优化，其核心目的是什么？<br>    2.How - BotHub流程优化是如何起效的，与之前的核心区别是什么？<br>    3.What - BotHub流程优化需要完成哪些任务？</p>
+<h2 id="以上三层可以被理解为-Objective-根本目的-→-KeyResult-与之前比可量化的提升-→-by-What-明确、可执行的动作"><a href="#以上三层可以被理解为-Objective-根本目的-→-KeyResult-与之前比可量化的提升-→-by-What-明确、可执行的动作" class="headerlink" title="以上三层可以被理解为 Objective(根本目的) → KeyResult(与之前比可量化的提升) → by What(明确、可执行的动作)"></a>以上三层可以被理解为 Objective(根本目的) → KeyResult(与之前比可量化的提升) → by What(明确、可执行的动作)</h2><p>[TOC]</p>
+<p>key result 的要点</p>
+<ol>
+<li>有期限、有量化标准，要求具体</li>
+<li>目标需要相对激进、但可以实现（理想状态为，付出指定时间内80%的努力可以获取到60%-70%的成就）</li>
+</ol>
+<p>？？是否不应该用OKR来衡量？这个流程如何进行量化？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">“标准工作流”只是我希望实现的标准动作中的一环；标准的迭代流程、标准的知识库建立等等也是标准的一部分。</span><br><span class="line"></span><br><span class="line">这是一个庞大的工程，不要焦虑。当前需要做的时完成版本1，后续可以继续迭代。</span><br><span class="line"></span><br><span class="line">[其实除了日常工作外，销售流程同样可以设置一套SOP]SOP即标准作业程序。销售上，可以制定从获客到成交的SOP；</span><br><span class="line">SOP希望对优秀个体的个人能力进行成功复制。复制依赖于SOP，SOP的质量将在很大程度上决定复制的成功性。相比于不现实地期望一蹴而就，尽早地写出第一版以供后续不断迭代显然更具可行性。</span><br><span class="line">https://zhuanlan.zhihu.com/p/346931467</span><br></pre></td></tr></table></figure>
+
+<p><img src="C:\Users\EDZ\AppData\Roaming\Typora\typora-user-images\image-20210410170430634.png" alt="image-20210410170430634"></p>
+<p>私心上，我为什么希望推动这件事情的发展？</p>
+<ul>
+<li><strong>明确协作中的责任</strong>：希望其他人交付给我的ticket 是经过一定校验的，避免因为其他人的失误产生不必要的时间损耗</li>
+<li><strong>优化沟通方式</strong>：希望其他人交付给我的信息是可以管理的，即信息清晰、不需要当面沟通也不需要重复确认的明确信息(文本显然是最满足条件的载体)，以避免繁杂事务打断工作</li>
+<li><strong>剥离可转接工作</strong>：当前在BotHub工作中承接了比较多身份的工作职能，如客户服务、产品设计、功能测试、数据分析与报表制作等，目前个人的工作时间无法承载，需要考虑如何将易复制的部分整理并交付给其他同学 </li>
+<li><strong>总结经验以便复刻</strong>：标准工作流应该在大部分团队都具有价值，所以希望实施的同时，了解到推行会产生什么问题、具体可以带来什么价值等等，并抽解出最佳的实践模板，以供后续复刻（如科思通）</li>
+</ul>
+<h3 id="What-BotHub-内部工作流程优化将如何进行"><a href="#What-BotHub-内部工作流程优化将如何进行" class="headerlink" title="What - BotHub 内部工作流程优化将如何进行"></a>What - BotHub 内部工作流程优化将如何进行</h3><ol>
+<li><p>确定完整的工作流，即当一个ticket发生时，是如何在各个角色间发生环节流转的。</p>
+<p>环节如需求提出/功能设计/前端后端开发/测试用例提供/uat测试/用例修正/文档更新/用户通知/功能发版/功能测试</p>
+<p>角色如 CSM+产品设计(可以细分出UI &amp; UX)+开发+测试+文档+</p>
+</li>
+<li><p>确定工作流中每一环节的规范：如需求提出，需要制定规范的ticket格式</p>
+</li>
+<li><p>建立知识库以支持每一环节工作：重新组织内部wiki结构，按流程进行划分</p>
+</li>
+</ol>
+<h3 id="How-BotHub内部工作流程将如何产生作用"><a href="#How-BotHub内部工作流程将如何产生作用" class="headerlink" title="How - BotHub内部工作流程将如何产生作用"></a>How - BotHub内部工作流程将如何产生作用</h3><h4 id="BotHub内部工作流程优化-被期望产生什么效果"><a href="#BotHub内部工作流程优化-被期望产生什么效果" class="headerlink" title="BotHub内部工作流程优化 被期望产生什么效果"></a>BotHub内部工作流程优化 被期望产生什么效果</h4><p>总体而言：</p>
+<ul>
+<li>减少成本<ul>
+<li>重复沟通、重复工作等重复性动作产生的人力资源的浪费</li>
+<li>人员流动性带来的知识流失</li>
+</ul>
+</li>
+<li>增加效用<ul>
+<li>复用已有经验</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Before(遇到的问题)</th>
+<th>After(想要的结果)</th>
+<th>How(我的想法-如何解决)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>组织规范</td>
+<td>团队内的分工依赖既有约定+口头协调；长线程、需要多人协作的ticket进度需要晨会或者逐人通知</td>
+<td>分工明确，环节透明</td>
+<td>流程中应包含正常ticket 处理的环节，以及流转明细<br />团队内的每个用户可以在3min内了解到自己相关的各ticket状态</td>
+</tr>
+<tr>
+<td></td>
+<td>issue处理的信息丢失（如issue中背景等信息、除报告人和经办人外的角色等）；当前记录很大程度依赖大家的记忆以及空余时间</td>
+<td>可追溯、易于回顾</td>
+<td>流程中应留存各步骤的流转人和交付物，以供后续开发等参考<br />暂无量化标准</td>
+</tr>
+<tr>
+<td>内部协作</td>
+<td>工作交接中，由于信息没有正确传达 / 遗忘 /…产生重复沟通</td>
+<td>确定的信息通过文本传递</td>
+<td>流程中应明确沟通的方式与包含的信息(例如，交接时应交代背景+当前进展+下环节内容 )<br />用于<strong>重复</strong>沟通信息的时间应低于ticket总时长的1/60（一人日 -  8min）</td>
+</tr>
+<tr>
+<td></td>
+<td>由于忘记操作造成的环节缺失(如权限开通、测试、功能设计忘记添加统计功能)</td>
+<td>通过文档规范处理流程</td>
+<td>流程中应覆盖当前遇到的100%用户问题与环节；在发现遗漏时应当对该version进行优化<br />同一缺失环节出现次数低于3次</td>
+</tr>
+<tr>
+<td>标准服务/知识传承</td>
+<td>遇到客户问题时，根据个人经验搜索资料及作答：强依赖于个人经验，且品质不可控（可能这次回答比较全面，下次就未必了）</td>
+<td>通过FAQ汇总经验</td>
+<td>应建立具有标准结构的BotHub知识库；流程中应包含迭代知识库的环节，以保证知识库中内容为最优经验<br />在材料的辅助下，新进入的同学学习的时间成本应低于3天，且针对重复问题可以提供标准服务</td>
+</tr>
+<tr>
+<td></td>
+<td>之前同事负责的功能/需求文档确缺失严重/信息不足难以理解</td>
+<td>通过文档规范处理流程</td>
+<td>流程中应包含文档的留存，以便后续进行追溯，从而实现维护/复制；流程中应明确规定，文档应包含哪些部分、需要哪些同学协作完成<br />暂无量化标准</td>
+</tr>
+<tr>
+<td></td>
+<td>标准服务的快（规模化复制）+优（最优经验）；知识传承的复制性与规范性</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="BotHub-内部工作流程优化-希望达成的几项重要结果"><a href="#BotHub-内部工作流程优化-希望达成的几项重要结果" class="headerlink" title="BotHub 内部工作流程优化 希望达成的几项重要结果"></a>BotHub 内部工作流程优化 希望达成的几项重要结果</h4><ol>
+<li>内部协作优化<ol>
+<li>协作处理过程中，流程对涉及环节的覆盖率，期望为90%</li>
+<li>各环节相互 </li>
+<li>ticket 处理过程中，额外用于确认issue当前状态的沟通，期望将为0次</li>
+</ol>
+</li>
+</ol>
+<h3 id="Why-为什么希望优化BotHub内部工作流程"><a href="#Why-为什么希望优化BotHub内部工作流程" class="headerlink" title="Why - 为什么希望优化BotHub内部工作流程"></a>Why - 为什么希望优化BotHub内部工作流程</h3><p>Objective：本次优化的期望是，<strong>通过标准动作，将现有经验进行固化</strong>，从而减少重复性的人力资源损耗，并使各阶段积累的经验长期发挥效用。</p>
+<p><font color="gray">在工作与和BotHub的同学们协作的过程中，我们可以发现存在的许多问题，诸如部分环节缺失（忘记给客户开通权限、月报缺失等）、沟通中部分信息丢失(忘记ticket进度以至于未验收)、平台功能及客户方案信息部分遗失(离职同学负责的功能等无人了解)。</font></p>
+<p><font color="gray">这些反反复复出现的问题并不是无法攻克的技术难题，抑或是难以实现的业务方案。会出现以上问题，很大程度上仅仅是因为，当前我们团队的协作主要依赖口述与人脑的记忆。当前记忆①可靠性不强②传承性较弱的弊端日渐暴露，我希望可以构建一个可执行的工作流程以优化上述问题，并在后续不断优化以解决新出现的问题。</font></p>
+
+      </div>
+      
+      
+      
+    </div>
+    
+
+    
+    
+    
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E4%B8%8A%E4%B8%89%E5%B1%82%E5%8F%AF%E4%BB%A5%E8%A2%AB%E7%90%86%E8%A7%A3%E4%B8%BA-Objective-%E6%A0%B9%E6%9C%AC%E7%9B%AE%E7%9A%84-%E2%86%92-KeyResult-%E4%B8%8E%E4%B9%8B%E5%89%8D%E6%AF%94%E5%8F%AF%E9%87%8F%E5%8C%96%E7%9A%84%E6%8F%90%E5%8D%87-%E2%86%92-by-What-%E6%98%8E%E7%A1%AE%E3%80%81%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9A%84%E5%8A%A8%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">以上三层可以被理解为 Objective(根本目的) → KeyResult(与之前比可量化的提升) → by What(明确、可执行的动作)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#What-BotHub-%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96%E5%B0%86%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">What - BotHub 内部工作流程优化将如何进行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-BotHub%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%B0%86%E5%A6%82%E4%BD%95%E4%BA%A7%E7%94%9F%E4%BD%9C%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">How - BotHub内部工作流程将如何产生作用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BotHub%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96-%E8%A2%AB%E6%9C%9F%E6%9C%9B%E4%BA%A7%E7%94%9F%E4%BB%80%E4%B9%88%E6%95%88%E6%9E%9C"><span class="nav-number">1.2.1.</span> <span class="nav-text">BotHub内部工作流程优化 被期望产生什么效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BotHub-%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E4%BC%98%E5%8C%96-%E5%B8%8C%E6%9C%9B%E8%BE%BE%E6%88%90%E7%9A%84%E5%87%A0%E9%A1%B9%E9%87%8D%E8%A6%81%E7%BB%93%E6%9E%9C"><span class="nav-number">1.2.2.</span> <span class="nav-text">BotHub 内部工作流程优化 希望达成的几项重要结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%8C%E6%9C%9B%E4%BC%98%E5%8C%96BotHub%E5%86%85%E9%83%A8%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">Why - 为什么希望优化BotHub内部工作流程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Wan Gong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:gongwanrong99@gmail.com" title="E-Mail → mailto:gongwanrong99@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wan Gong</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
